@@ -6,12 +6,12 @@ import { services, servicesIntro } from "@/lib/data/services";
 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
-// Each pillar carries a dark, footer-level background with a subtle flag tint
-// (yellow → blue → red), white text throughout.
+// Each pillar carries a full Venezuelan flag color — yellow → blue → red —
+// with contrast-matched text (dark on yellow, white on blue/red).
 const ACTS = [
-  { bg: "color-mix(in oklch, var(--flag-yellow) 33.33%, #0c0a09)", ink: "#ffffff", soft: "rgba(255,255,255,0.78)", eyebrow: "rgba(255,255,255,0.7)" },
-  { bg: "color-mix(in oklch, var(--flag-blue) 33.33%, #0c0a09)", ink: "#ffffff", soft: "rgba(255,255,255,0.78)", eyebrow: "rgba(255,255,255,0.7)" },
-  { bg: "color-mix(in oklch, var(--flag-red) 33.33%, #0c0a09)", ink: "#ffffff", soft: "rgba(255,255,255,0.78)", eyebrow: "rgba(255,255,255,0.7)" },
+  { bg: "#FCD016", ink: "#0c0a09", soft: "rgba(12,10,9,0.78)", eyebrow: "rgba(12,10,9,0.6)" },
+  { bg: "#003893", ink: "#ffffff", soft: "rgba(255,255,255,0.85)", eyebrow: "rgba(255,255,255,0.72)" },
+  { bg: "#CF142B", ink: "#ffffff", soft: "rgba(255,255,255,0.88)", eyebrow: "rgba(255,255,255,0.74)" },
 ] as const;
 
 /**
