@@ -88,7 +88,7 @@ export function SiteFooter() {
           </div>
 
           <nav data-reveal aria-label="Footer">
-            <h3 className="text-xs font-semibold tracking-[0.22em] text-white/85 uppercase">
+            <h3 className="text-xs font-semibold tracking-[0.22em] text-white/90 uppercase">
               Navega
             </h3>
             <ul className="mt-5 flex flex-col gap-3">
@@ -107,7 +107,7 @@ export function SiteFooter() {
           </nav>
 
           <nav data-reveal aria-label="Social">
-            <h3 className="text-xs font-semibold tracking-[0.22em] text-white/85 uppercase">
+            <h3 className="text-xs font-semibold tracking-[0.22em] text-white/90 uppercase">
               Síguenos
             </h3>
             <ul className="mt-5 flex flex-col gap-3">

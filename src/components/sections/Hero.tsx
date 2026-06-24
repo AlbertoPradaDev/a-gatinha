@@ -126,8 +126,6 @@ export function Hero() {
 
         {/* Copy + CTAs + features — below on mobile, left on desktop */}
         <div className="order-2 flex flex-col justify-center px-6 py-14 lg:order-1 lg:px-10 lg:py-20">
-          <span data-rise className="h-0.5 w-14 bg-foreground" />
-
           <h1 className="mt-7 font-display text-[clamp(2.75rem,7vw,5.5rem)] leading-[0.95] font-bold tracking-[-0.02em]">
             {hero.headline.map((line, i) => (
               <span key={i} className="block overflow-hidden pb-[0.06em]">
@@ -137,14 +135,12 @@ export function Hero() {
               </span>
             ))}
           </h1>
-
           <p
             data-rise
             className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground md:text-lg"
           >
             {hero.description}
           </p>
-
           <div data-rise className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Button
               asChild
