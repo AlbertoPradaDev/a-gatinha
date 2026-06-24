@@ -6,12 +6,12 @@ import { services, servicesIntro } from "@/lib/data/services";
 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
-// Each pillar carries a full Venezuelan flag color — yellow → blue → red —
-// with contrast-matched text (dark on yellow, white on blue/red).
+// Exactly the footer's colors: each flag color composited under the same
+// #0c0a09/72 dark scrim (28% flag over #0c0a09 in sRGB), white text.
 const ACTS = [
-  { bg: "#FCD016", ink: "#0c0a09", soft: "rgba(12,10,9,0.78)", eyebrow: "rgba(12,10,9,0.6)" },
-  { bg: "#003893", ink: "#ffffff", soft: "rgba(255,255,255,0.85)", eyebrow: "rgba(255,255,255,0.72)" },
-  { bg: "#CF142B", ink: "#ffffff", soft: "rgba(255,255,255,0.88)", eyebrow: "rgba(255,255,255,0.74)" },
+  { bg: "color-mix(in srgb, var(--flag-yellow) 28%, #0c0a09)", ink: "#ffffff", soft: "rgba(255,255,255,0.9)", eyebrow: "rgba(255,255,255,0.85)" },
+  { bg: "color-mix(in srgb, var(--flag-blue) 28%, #0c0a09)", ink: "#ffffff", soft: "rgba(255,255,255,0.9)", eyebrow: "rgba(255,255,255,0.85)" },
+  { bg: "color-mix(in srgb, var(--flag-red) 28%, #0c0a09)", ink: "#ffffff", soft: "rgba(255,255,255,0.9)", eyebrow: "rgba(255,255,255,0.85)" },
 ] as const;
 
 /**
