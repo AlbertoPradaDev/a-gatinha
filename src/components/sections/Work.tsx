@@ -92,11 +92,11 @@ export function Work() {
         <SectionHeading {...workIntro} />
       </div>
 
-      {/* Mobile + reduced-motion: plain stacked list */}
-      <div className="mx-auto mt-10 max-w-2xl px-6 motion-safe:md:hidden">
+      {/* Mobile + reduced-motion: sticky stack — cards pin at the top and pile on scroll */}
+      <div className="mx-auto mt-10 max-w-2xl px-6 pb-8 motion-safe:md:hidden">
         {projects.map((project) => (
-          <article key={project.title} className="group mb-6 last:mb-0">
-            <div className="overflow-hidden border border-border bg-card">
+          <article key={project.title} className="group sticky top-24 mb-8">
+            <div className="overflow-hidden border border-border bg-card shadow-[0_-12px_40px_-12px_rgba(0,0,0,0.18)]">
               <ProjectMedia project={project} className="aspect-[4/3] border-0" />
               <div className="flex items-baseline justify-between gap-4 p-5">
                 <h3 className="font-display text-xl font-semibold tracking-tight">
