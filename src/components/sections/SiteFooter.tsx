@@ -64,7 +64,7 @@ export function SiteFooter() {
       />
       <div aria-hidden className="absolute inset-0 bg-[#0c0a09]/72" />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 py-12 lg:px-10">
+      <div className="relative z-10 px-gutter py-12">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr]">
           <div data-reveal>
             <span className="font-display text-xl font-bold tracking-tight uppercase">
@@ -131,7 +131,7 @@ export function SiteFooter() {
           <span
             ref={word}
             style={{ transform: "translateY(110%)" }}
-            className="block font-display text-[clamp(2.5rem,10vw,7rem)] leading-[0.8] font-bold tracking-[-0.03em] text-white/90 uppercase [will-change:transform]"
+            className="block font-display text-[clamp(2.5rem,10vw,11rem)] leading-[0.8] font-bold tracking-[-0.03em] text-white/90 uppercase [will-change:transform]"
           >
             {site.name}
           </span>

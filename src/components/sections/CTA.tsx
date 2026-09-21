@@ -49,7 +49,7 @@ export function CTA() {
       ref={scope}
       className="relative border-t border-border py-16 sm:py-20 md:py-24"
     >
-      <div className="mx-auto grid max-w-7xl gap-14 px-6 lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-10">
+      <div className="grid gap-14 px-gutter lg:grid-cols-2 lg:items-stretch lg:gap-20">
         {/* Left: heading + details */}
         <div>
           <span className="text-sm font-semibold tracking-[0.22em] text-muted-foreground uppercase">
@@ -115,7 +115,7 @@ export function CTA() {
         </div>
 
         {/* Right: live map */}
-        <div className="relative aspect-[4/3] overflow-hidden border border-border bg-muted lg:aspect-[5/6]">
+        <div className="relative aspect-[4/3] overflow-hidden border border-border bg-muted lg:aspect-auto lg:min-h-[36rem]">
           <iframe
             src={cta.mapSrc}
             title="Mapa — Snack-Bar A Gatinha, Queluz"

@@ -106,7 +106,7 @@ export function SiteHeader() {
               className="group/item relative isolate overflow-hidden border-t border-white/10 py-7 last:border-b"
             >
               <div
-                className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-10"
+                className="flex items-center justify-between px-gutter"
                 style={{
                   transform: open ? "translateY(0)" : "translateY(110%)",
                   opacity: open ? 1 : 0,
@@ -129,7 +129,7 @@ export function SiteHeader() {
         </div>
 
         <div
-          className="mx-auto mt-12 flex max-w-7xl flex-wrap items-center gap-x-8 gap-y-2 px-6 lg:px-10"
+          className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-2 px-gutter"
           style={{
             opacity: open ? 1 : 0,
             transition: "opacity 0.5s ease",
@@ -158,7 +158,7 @@ export function SiteHeader() {
           scrolled && !open ? "bg-background/70 backdrop-blur-xl" : "",
         )}
       >
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-10">
+        <div className="flex h-20 items-center justify-between px-gutter">
           <a
             href="#"
             onClick={(e) => go(e, "#")}

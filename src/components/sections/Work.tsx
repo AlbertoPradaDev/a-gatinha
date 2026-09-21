@@ -88,12 +88,12 @@ export function Work() {
 
   return (
     <section id="menu" ref={scope} className="py-16 sm:py-20 md:py-24">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+      <div className="px-gutter">
         <SectionHeading {...workIntro} />
       </div>
 
       {/* Mobile + reduced-motion: sticky stack — cards pin at the top and pile on scroll */}
-      <div className="mx-auto mt-10 max-w-2xl px-6 pb-8 motion-safe:md:hidden">
+      <div className="mx-auto mt-10 max-w-2xl px-gutter pb-8 motion-safe:md:hidden">
         {projects.map((project) => (
           <article key={project.title} className="group sticky top-24 mb-8">
             <div className="overflow-hidden border border-border bg-card shadow-[0_-12px_40px_-12px_rgba(0,0,0,0.18)]">
@@ -119,7 +119,7 @@ export function Work() {
         <div className="sticky top-0 flex h-svh items-center overflow-hidden">
           <div
             ref={track}
-            className="flex gap-8 px-6 lg:px-10 [will-change:transform]"
+            className="flex gap-8 px-gutter [will-change:transform]"
           >
             {projects.map((project) => (
               <article

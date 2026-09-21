@@ -76,7 +76,7 @@ export function Hero() {
       ref={scope}
       className="relative min-h-[100svh] bg-background text-foreground"
     >
-      <div className="mx-auto grid min-h-[100svh] max-w-7xl grid-cols-1 lg:grid-cols-2">
+      <div className="grid min-h-[100svh] grid-cols-1 lg:grid-cols-2">
         {/* Product carousel — first on mobile, right on desktop */}
         <div className="relative order-1 h-[44vh] overflow-hidden border-b border-border lg:order-2 lg:h-auto lg:border-b-0 lg:border-l">
           {slides.map((slide, i) => (
@@ -125,7 +125,7 @@ export function Hero() {
         </div>
 
         {/* Copy + CTAs + features — below on mobile, left on desktop */}
-        <div className="order-2 flex flex-col justify-center px-6 py-14 lg:order-1 lg:px-10 lg:py-20">
+        <div className="order-2 flex flex-col justify-center px-gutter py-14 lg:order-1 lg:py-20">
           <h1 className="mt-7 font-display text-[clamp(2.75rem,7vw,5.5rem)] leading-[0.95] font-bold tracking-[-0.02em]">
             {hero.headline.map((line, i) => (
               <span key={i} className="block overflow-hidden pb-[0.06em]">

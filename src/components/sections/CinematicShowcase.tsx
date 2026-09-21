@@ -84,7 +84,7 @@ export function CinematicShowcase() {
 
           <div
             data-caption
-            className="absolute inset-x-0 bottom-0 mx-auto flex max-w-7xl flex-col gap-2 px-6 pb-12 text-white lg:px-10"
+            className="absolute inset-x-0 bottom-0 flex flex-col gap-2 px-gutter pb-12 text-white"
           >
             <span className="text-xs font-semibold tracking-[0.22em] text-white/70 uppercase">
               {showcase.eyebrow}

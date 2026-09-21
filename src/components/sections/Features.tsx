@@ -58,7 +58,7 @@ export function Features() {
   return (
     <section id="about">
       {/* Reduced-motion fallback only: static stacked list, flag colors */}
-      <div className="mx-auto hidden max-w-7xl px-6 py-16 sm:py-20 lg:px-10 motion-reduce:block">
+      <div className="hidden px-gutter py-16 sm:py-20 motion-reduce:block">
         <SectionHeading {...servicesIntro} />
         <div className="mt-12 flex flex-col gap-3">
           {services.map((service, i) => {
@@ -102,7 +102,7 @@ export function Features() {
                 }}
                 className="absolute inset-0"
               >
-                <div className="mx-auto flex h-full w-full max-w-7xl flex-col justify-center px-6 lg:px-10">
+                <div className="flex h-full w-full flex-col justify-center px-gutter">
                   <span
                     className="text-sm font-semibold tracking-[0.26em] uppercase"
                     style={{ color: c.eyebrow }}
@@ -126,7 +126,7 @@ export function Features() {
           })}
 
           {/* progress bar — mix-blend keeps it visible on any flag color */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-[10vh] mx-auto w-full max-w-7xl px-6 lg:px-10">
+          <div className="pointer-events-none absolute inset-x-0 bottom-[10vh] w-full px-gutter">
             <div className="relative h-px w-full bg-white/25 mix-blend-difference">
               <div
                 ref={bar}
