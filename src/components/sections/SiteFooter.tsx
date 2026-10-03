@@ -1,16 +1,38 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { ArrowUp } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { site } from "@/lib/data/site";
+import { useCurrentRoute } from "@/hooks/useCurrentRoute";
+import { business, fullAddress } from "@/lib/data/business";
+import { localizedPath } from "@/i18n/routes";
+import { scrollToTarget } from "@/lib/scroll";
+import type { CommonContent } from "@/types/content";
 
-/** Footer: link columns, an oversized wordmark, and a back-to-top control. */
-export function SiteFooter() {
+const linkClass =
+  "text-white transition-colors duration-[var(--duration-fast)] ease-[var(--ease-premium)] hover:text-white/70";
+
+function Heading({ children }: { children: React.ReactNode }) {
+  return (
+    <h3 className="text-xs font-semibold tracking-[0.22em] text-white/90 uppercase">
+      {children}
+    </h3>
+  );
+}
+
+/**
+ * Footer: brand blurb, page links, contact details and socials over the flag
+ * bands, an oversized wordmark, and a legal row (privacy, terms, Livro de
+ * Reclamações) with a back-to-top control.
+ */
+export function SiteFooter({ common }: { common: CommonContent }) {
+  const { lang } = useCurrentRoute();
   const scope = useRef<HTMLElement>(null);
   const word = useRef<HTMLSpanElement>(null);
   useScrollReveal(scope);
   const year = new Date().getFullYear();
+  const t = common.footer;
 
   // Shelf `footer/big-type`: the oversized wordmark (rendered clipped via an
   // inline translateY) rises into view when the footer enters. Inline styles +
@@ -37,20 +59,6 @@ export function SiteFooter() {
     return () => io.disconnect();
   }, []);
 
-  const go = (e: React.MouseEvent, href: string) => {
-    if (!href.startsWith("#")) return;
-    e.preventDefault();
-    const target = href === "#" ? 0 : document.querySelector(href);
-    if (target === null) return;
-    if (window.__lenis) {
-      window.__lenis.scrollTo(target as HTMLElement | number, { offset: -80 });
-    } else if (typeof target !== "number") {
-      target.scrollIntoView({ behavior: "smooth" });
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
   return (
     <footer ref={scope} className="relative overflow-hidden text-white">
       {/* Tricolor horizontal flag bands + dark scrim for legibility */}
@@ -65,60 +73,65 @@ export function SiteFooter() {
       <div aria-hidden className="absolute inset-0 bg-[#0c0a09]/72" />
 
       <div className="relative z-10 px-gutter py-12">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr]">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1.2fr_1fr]">
           <div data-reveal>
             <span className="font-display text-xl font-bold tracking-tight uppercase">
-              {site.name}
+              {business.name}
             </span>
-            <p className="mt-4 max-w-xs leading-relaxed text-white/90">
-              {site.tagline}. Arepas, cachapas, empanadas y tequeños hechos al
-              momento en Queluz — el sabor de casa, sin fronteras.
-            </p>
+            <p className="mt-4 max-w-xs leading-relaxed text-white/90">{t.blurb}</p>
             <a
-              href={site.cta.href}
+              href={business.whatsapp.href}
               target="_blank"
               rel="noopener noreferrer"
               className="group mt-6 inline-flex items-center text-white"
             >
               <span className="relative font-medium">
-                Escríbenos por WhatsApp
+                {t.whatsapp}
                 <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-white transition-transform duration-[var(--duration-medium)] ease-[var(--ease-premium)] group-hover:scale-x-100" />
               </span>
             </a>
           </div>
 
-          <nav data-reveal aria-label="Footer">
-            <h3 className="text-xs font-semibold tracking-[0.22em] text-white/90 uppercase">
-              Navega
-            </h3>
+          <nav data-reveal aria-label={t.navHeading}>
+            <Heading>{t.navHeading}</Heading>
             <ul className="mt-5 flex flex-col gap-3">
-              {site.nav.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    onClick={(e) => go(e, link.href)}
-                    className="text-white transition-colors duration-[var(--duration-fast)] ease-[var(--ease-premium)] hover:text-white/70"
-                  >
-                    {link.label}
-                  </a>
+              {common.nav.map((key) => (
+                <li key={key}>
+                  <Link href={localizedPath(lang, key)} className={linkClass}>
+                    {common.pages[key]}
+                  </Link>
                 </li>
               ))}
             </ul>
           </nav>
 
-          <nav data-reveal aria-label="Social">
-            <h3 className="text-xs font-semibold tracking-[0.22em] text-white/90 uppercase">
-              Síguenos
-            </h3>
+          <div data-reveal>
+            <Heading>{t.contactHeading}</Heading>
             <ul className="mt-5 flex flex-col gap-3">
-              {site.socials.map((s) => (
-                <li key={s.href}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white transition-colors duration-[var(--duration-fast)] ease-[var(--ease-premium)] hover:text-white/70"
-                  >
+              <li>
+                <a href={business.mapsUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                  {fullAddress}
+                </a>
+              </li>
+              <li>
+                <a href={business.phone.href} className={linkClass}>
+                  {business.phone.display}
+                </a>
+              </li>
+              <li>
+                <a href={`mailto:${business.email}`} className={linkClass}>
+                  {business.email}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <nav data-reveal aria-label={t.followHeading}>
+            <Heading>{t.followHeading}</Heading>
+            <ul className="mt-5 flex flex-col gap-3">
+              {business.socials.map((s) => (
+                <li key={s.label}>
+                  <a href={s.href} target="_blank" rel="noopener noreferrer" className={linkClass}>
                     {s.label}
                   </a>
                 </li>
@@ -133,23 +146,41 @@ export function SiteFooter() {
             style={{ transform: "translateY(110%)" }}
             className="block font-display text-[clamp(2.5rem,10vw,11rem)] leading-[0.8] font-bold tracking-[-0.03em] text-white/90 uppercase [will-change:transform]"
           >
-            {site.name}
+            {business.name}
           </span>
         </div>
 
-        <div className="mt-8 flex flex-col gap-4 border-t border-white/15 pt-7 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-1 text-sm text-white/90">
-            <span>© {year} Snack-Bar A Gatinha. Todos los derechos reservados.</span>
-            <span>
-              Desarrollado por{" "}
+        <div className="mt-8 flex flex-col gap-6 border-t border-white/15 pt-7 lg:flex-row lg:items-end lg:justify-between">
+          <div className="flex flex-col gap-3 text-sm text-white/90">
+            <div className="flex flex-wrap gap-x-6 gap-y-2">
+              <Link href={localizedPath(lang, "privacy")} className={linkClass}>
+                {common.pages.privacy}
+              </Link>
+              <Link href={localizedPath(lang, "terms")} className={linkClass}>
+                {common.pages.terms}
+              </Link>
               <a
-                href="https://www.albertopradadev.com"
+                href={business.complaintsBookUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass}
+              >
+                {t.complaintsBook}
+              </a>
+            </div>
+            <span>
+              © {year} {business.name}. {t.rights}
+            </span>
+            <span>
+              {t.developedBy}{" "}
+              <a
+                href={business.developer.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center text-white"
               >
                 <span className="relative font-medium">
-                  Alberto Prada
+                  {business.developer.name}
                   <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-white transition-transform duration-[var(--duration-medium)] ease-[var(--ease-premium)] group-hover:scale-x-100" />
                 </span>
               </a>
@@ -157,10 +188,10 @@ export function SiteFooter() {
           </div>
           <button
             type="button"
-            onClick={(e) => go(e, "#")}
-            className="group inline-flex cursor-pointer items-center gap-2 text-sm font-semibold tracking-[0.14em] text-white uppercase"
+            onClick={() => scrollToTarget(0, 0)}
+            className="group inline-flex cursor-pointer items-center gap-2 self-start text-sm font-semibold tracking-[0.14em] text-white uppercase lg:self-auto"
           >
-            Volver arriba
+            {t.backToTop}
             <span className="inline-flex size-8 items-center justify-center rounded-full border border-white/20 transition-colors duration-[var(--duration-fast)] ease-[var(--ease-premium)] group-hover:bg-white/10">
               <ArrowUp className="size-4" />
             </span>

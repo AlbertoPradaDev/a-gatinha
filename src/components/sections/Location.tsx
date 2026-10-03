@@ -1,10 +1,13 @@
 "use client";
 
 import { useRef } from "react";
-import { ArrowUpRight, ArrowRight, MapPin, Clock } from "lucide-react";
+import { ArrowUpRight, MapPin, Clock } from "lucide-react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { Button } from "@/components/ui/button";
-import { cta } from "@/lib/data/cta";
+import { ArrowLink } from "@/components/ui/ArrowLink";
+import { business, fullAddress } from "@/lib/data/business";
+import type { HoursRow } from "@/lib/content";
+import type { LocationContent } from "@/types/content";
 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
@@ -12,9 +15,16 @@ const clamp = (v: number) => Math.min(1, Math.max(0, v));
  * Location / closing section. The heading is the Shelf `scroll/scrub-reveal`:
  * its words light up (dim → full) tied to the section's scroll progress — no
  * pin, so the block stays compact above the address, hours and live map.
- * Mobile / reduced-motion render the heading at full opacity.
+ * The dimming only applies once the heading is on screen.
+ * Reduced motion renders the heading at full opacity.
  */
-export function CTA() {
+export function Location({
+  content,
+  hours,
+}: {
+  content: LocationContent;
+  hours: HoursRow[];
+}) {
   const scope = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
@@ -25,10 +35,11 @@ export function CTA() {
         const words = gsap.utils.toArray<HTMLElement>(
           scope.current!.querySelectorAll("[data-cta-word]"),
         );
-        gsap.set(words, { opacity: 0.18 });
+        // No dimmed state until the heading reaches the viewport: the words
+        // keep full contrast for assistive tech / audits and below the fold.
         ScrollTrigger.create({
           trigger: headingRef.current,
-          start: "top 82%",
+          start: "top bottom",
           end: "bottom 45%",
           scrub: true,
           onUpdate: (self) => {
@@ -53,14 +64,14 @@ export function CTA() {
         {/* Left: heading + details */}
         <div>
           <span className="text-sm font-semibold tracking-[0.22em] text-muted-foreground uppercase">
-            Dónde Estamos
+            {content.eyebrow}
           </span>
 
           <h2
             ref={headingRef}
             className="mt-5 font-display text-[clamp(2.5rem,6.5vw,5rem)] leading-[0.98] font-bold tracking-[-0.02em]"
           >
-            {cta.heading.split(" ").map((word, i) => (
+            {content.heading.split(" ").map((word, i) => (
               <span key={i} data-cta-word>
                 {word}{" "}
               </span>
@@ -68,18 +79,18 @@ export function CTA() {
           </h2>
 
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            {cta.body}
+            {content.body}
           </p>
 
           <div className="mt-8 flex items-start gap-3">
             <MapPin className="mt-1 size-5 shrink-0 text-brand" />
-            <p className="font-medium">{cta.address}</p>
+            <p className="font-medium">{fullAddress}</p>
           </div>
 
           <div className="mt-6 flex items-start gap-3">
             <Clock className="mt-1 size-5 shrink-0 text-brand" />
             <dl className="grid gap-1.5">
-              {cta.hours.map((h) => (
+              {hours.map((h) => (
                 <div key={h.day} className="flex gap-x-6 text-sm sm:text-base">
                   <dt className="w-40 shrink-0 text-muted-foreground">{h.day}</dt>
                   <dd className="font-medium tabular-nums">{h.time}</dd>
@@ -94,31 +105,22 @@ export function CTA() {
               size="lg"
               className="group h-12 px-8 text-xs font-semibold tracking-[0.16em] uppercase"
             >
-              <a href={cta.primary.href} target="_blank" rel="noopener noreferrer">
-                {cta.primary.label}
+              <a href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
+                {content.directions}
                 <ArrowUpRight className="size-4 transition-transform duration-[var(--duration-fast)] ease-[var(--ease-premium)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </Button>
-            <a
-              href={cta.secondary.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex h-12 items-center gap-2 px-2 text-xs font-semibold tracking-[0.16em] text-foreground uppercase"
-            >
-              <span className="relative">
-                {cta.secondary.label}
-                <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-foreground transition-transform duration-[var(--duration-medium)] ease-[var(--ease-premium)] group-hover:scale-x-100" />
-              </span>
-              <ArrowRight className="size-4 transition-transform duration-[var(--duration-fast)] ease-[var(--ease-premium)] group-hover:translate-x-1" />
-            </a>
+            <ArrowLink href={business.whatsapp.href} className="h-12 px-2">
+              {content.whatsapp}
+            </ArrowLink>
           </div>
         </div>
 
         {/* Right: live map */}
         <div className="relative aspect-[4/3] overflow-hidden border border-border bg-muted lg:aspect-auto lg:min-h-[36rem]">
           <iframe
-            src={cta.mapSrc}
-            title="Mapa — Snack-Bar A Gatinha, Queluz"
+            src={business.mapEmbed}
+            title={content.mapTitle}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             className="absolute inset-0 h-full w-full grayscale-[0.2]"

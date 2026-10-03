@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { services, servicesIntro } from "@/lib/data/services";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import type { SectionIntro, Value } from "@/types/content";
 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
@@ -15,15 +16,17 @@ const ACTS = [
 ] as const;
 
 /**
- * "Lo que nos define" — Shelf `sections/pinned-act` ported. On md+ with motion a
- * panel pins (sticky) while the three pillars cross-fade as you scroll, each on
- * its own flag color (yellow → blue → red), with a progress bar tracking the act.
- * Driven by a plain scroll listener + inline styles (robust; no GSAP). Mobile and
- * reduced-motion get a static stacked list in the same flag colors.
+ * "Lo que nos define" — heading, then the Shelf `sections/pinned-act` ported. With motion a
+ * panel pins (sticky) while the values cross-fade as you scroll, each on its
+ * own flag color (yellow → blue → red), with a progress bar tracking the act.
+ * Driven by a plain scroll listener + inline styles (robust; no GSAP).
+ * Reduced motion gets a static stacked list in the same flag colors.
  */
-export function Features() {
+export function Values({ intro, items }: { intro: SectionIntro; items: Value[] }) {
   const wrap = useRef<HTMLDivElement>(null);
   const bar = useRef<HTMLDivElement>(null);
+  const head = useRef<HTMLDivElement>(null);
+  useScrollReveal(head);
 
   useEffect(() => {
     const el = wrap.current;
@@ -56,24 +59,27 @@ export function Features() {
   }, []);
 
   return (
-    <section id="about">
+    <section>
+      <div ref={head} className="border-t border-border px-gutter pt-16 pb-12 sm:pt-20 md:pt-24">
+        <SectionHeading {...intro} />
+      </div>
+
       {/* Reduced-motion fallback only: static stacked list, flag colors */}
-      <div className="hidden px-gutter py-16 sm:py-20 motion-reduce:block">
-        <SectionHeading {...servicesIntro} />
-        <div className="mt-12 flex flex-col gap-3">
-          {services.map((service, i) => {
+      <div className="hidden px-gutter pb-16 sm:pb-20 motion-reduce:block">
+        <div className="flex flex-col gap-3">
+          {items.map((value, i) => {
             const c = ACTS[i % ACTS.length];
             return (
               <div
-                key={service.title}
+                key={value.title}
                 className="p-8"
                 style={{ backgroundColor: c.bg, color: c.ink }}
               >
                 <h3 className="font-display text-2xl font-bold tracking-tight">
-                  {service.title}
+                  {value.title}
                 </h3>
                 <p className="mt-3 leading-relaxed" style={{ color: c.soft }}>
-                  {service.description}
+                  {value.description}
                 </p>
               </div>
             );
@@ -81,18 +87,18 @@ export function Features() {
         </div>
       </div>
 
-      {/* All sizes (motion): pinned act, background changes per pillar */}
+      {/* All sizes (motion): pinned act, background changes per value */}
       <div
         ref={wrap}
         className="relative hidden motion-safe:block"
-        style={{ height: `${services.length * 100 + 60}vh` }}
+        style={{ height: `${items.length * 100 + 60}vh` }}
       >
         <div className="sticky top-0 h-svh overflow-hidden">
-          {services.map((service, i) => {
+          {items.map((value, i) => {
             const c = ACTS[i % ACTS.length];
             return (
               <div
-                key={service.title}
+                key={value.title}
                 data-act
                 style={{
                   opacity: i === 0 ? 1 : 0,
@@ -107,17 +113,17 @@ export function Features() {
                     className="text-sm font-semibold tracking-[0.26em] uppercase"
                     style={{ color: c.eyebrow }}
                   >
-                    {servicesIntro.eyebrow}
+                    {intro.eyebrow}
                   </span>
                   <div className="mt-10 max-w-4xl">
                     <h3 className="font-display text-[clamp(2.75rem,7vw,5.5rem)] leading-[0.92] font-bold tracking-[-0.02em]">
-                      {service.title}
+                      {value.title}
                     </h3>
                     <p
                       className="mt-6 max-w-2xl text-xl leading-relaxed"
                       style={{ color: c.soft }}
                     >
-                      {service.description}
+                      {value.description}
                     </p>
                   </div>
                 </div>

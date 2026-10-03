@@ -76,7 +76,7 @@
   --secondary: oklch(0.97 0.002 75); /* stone-100 */
   --secondary-foreground: oklch(0.216 0.006 56);
   --muted: oklch(0.97 0.002 75);
-  --muted-foreground: oklch(0.553 0.012 70); /* stone-500 */
+  --muted-foreground: oklch(0.5 0.012 70); /* a touch darker than stone-500: AA on secondary/cream */
   --accent: oklch(0.97 0.002 75);
   --accent-foreground: oklch(0.216 0.006 56);
   --destructive: oklch(0.58 0.22 27);
@@ -220,4 +220,248 @@ html.lenis body {
 @utility bg-grain {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-repeat: repeat;
+}
+
+/* ── Section tones ────────────────────────────────────────────────────────
+   Add `tone-*` to a section (see lib/tone.ts) to repaint it in the flag
+   palette. Each tone redefines the theme tokens in its own scope, so every
+   child — headings, muted text, borders, cards, buttons, brand accents —
+   adapts without per-component colour logic. ────────────────────────────── */
+.tone-cream,
+.tone-yellow,
+.tone-blue,
+.tone-red {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Warm paper — a quiet break from the stone-50 page. */
+.tone-cream {
+  --background: oklch(0.955 0.028 85);
+  --card: oklch(0.99 0.01 85);
+  --secondary: oklch(0.925 0.035 85);
+  --muted: oklch(0.925 0.035 85);
+  --border: oklch(0.216 0.006 56 / 0.12);
+  --input: oklch(0.216 0.006 56 / 0.18);
+}
+
+/* Flag yellow, dark ink; red becomes the accent. */
+.tone-yellow {
+  --background: var(--flag-yellow);
+  --foreground: oklch(0.216 0.006 56);
+  --card: oklch(0.985 0.03 95);
+  --card-foreground: oklch(0.216 0.006 56);
+  --muted-foreground: oklch(0.216 0.006 56 / 0.74);
+  --secondary: oklch(0.216 0.006 56 / 0.06);
+  --muted: oklch(0.216 0.006 56 / 0.06);
+  --border: oklch(0.216 0.006 56 / 0.16);
+  --input: oklch(0.216 0.006 56 / 0.22);
+  --brand: var(--flag-red);
+  --brand-foreground: oklch(0.99 0 0);
+  --brand-muted: oklch(0.56 0.21 24 / 0.12);
+}
+
+/* Flag blue, white ink; yellow becomes the accent. */
+.tone-blue {
+  --background: var(--flag-blue);
+  --foreground: oklch(0.99 0 0);
+  --card: oklch(0.33 0.14 264);
+  --card-foreground: oklch(0.99 0 0);
+  --muted-foreground: oklch(1 0 0 / 0.76);
+  --primary: oklch(0.99 0 0);
+  --primary-foreground: var(--flag-blue);
+  --secondary: oklch(1 0 0 / 0.1);
+  --muted: oklch(1 0 0 / 0.1);
+  --accent: oklch(1 0 0 / 0.14);
+  --border: oklch(1 0 0 / 0.2);
+  --input: oklch(1 0 0 / 0.28);
+  --ring: var(--flag-yellow);
+  --brand: var(--flag-yellow);
+  --brand-foreground: oklch(0.216 0.006 56);
+  --brand-muted: oklch(0.86 0.16 92 / 0.18);
+}
+
+/* Flag red, white ink; yellow becomes the accent. */
+.tone-red {
+  --background: var(--flag-red);
+  --foreground: oklch(0.99 0 0);
+  --card: oklch(0.5 0.19 24);
+  --card-foreground: oklch(0.99 0 0);
+  --muted-foreground: oklch(1 0 0 / 0.8);
+  --primary: oklch(0.99 0 0);
+  --primary-foreground: var(--flag-red);
+  --secondary: oklch(1 0 0 / 0.12);
+  --muted: oklch(1 0 0 / 0.12);
+  --accent: oklch(1 0 0 / 0.16);
+  --border: oklch(1 0 0 / 0.24);
+  --input: oklch(1 0 0 / 0.3);
+  --ring: var(--flag-yellow);
+  --brand: var(--flag-yellow);
+  --brand-foreground: oklch(0.216 0.006 56);
+  --brand-muted: oklch(0.86 0.16 92 / 0.2);
+}
+
+/* ── Page curtain (components/providers/Curtain.tsx) ─────────────────────
+   The intro on a full load is pure CSS, so it plays from the first paint
+   without waiting for JavaScript: the flag stripes sweep in over a dark
+   screen, the wordmark rises letter by letter, then the stripes fly out and
+   the page shows (from 1.35s — INTRO_EXIT_MS in lib/curtain.ts). Only
+   transform/opacity, so it all runs on the compositor. Per-element delays
+   are inline (stagger). Page transitions reuse the stripes with GSAP once
+   the `curtain-intro` class is removed. ─────────────────────────────── */
+.curtain-intro {
+  animation: curtain-fade 0.01s linear 2.15s both;
+}
+.curtain-intro [data-backdrop] {
+  animation: curtain-fade 0.01s linear 0.65s both;
+}
+.curtain-intro [data-stripe] {
+  animation: curtain-stripe-a 1.95s both;
+}
+.curtain-intro [data-stripe="b"] {
+  animation-name: curtain-stripe-b;
+}
+.curtain-intro [data-letter] {
+  animation: curtain-letter 1.2s both;
+}
+.curtain-intro [data-tagline] {
+  animation: curtain-tagline 0.8s linear 0.55s both;
+}
+
+@keyframes curtain-fade {
+  to {
+    opacity: 0;
+  }
+}
+/* Enters from the left, leaves to the right (origin flips while at full
+   width, so the switch is invisible). */
+@keyframes curtain-stripe-a {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  25.6% {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+  27% {
+    transform-origin: right center;
+  }
+  69.2% {
+    transform: scaleX(1);
+    transform-origin: right center;
+    animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  100% {
+    transform: scaleX(0);
+    transform-origin: right center;
+  }
+}
+/* Mirror: enters from the right, leaves to the left. */
+@keyframes curtain-stripe-b {
+  0% {
+    transform: scaleX(0);
+    transform-origin: right center;
+    animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  25.6% {
+    transform: scaleX(1);
+    transform-origin: right center;
+  }
+  27% {
+    transform-origin: left center;
+  }
+  69.2% {
+    transform: scaleX(1);
+    transform-origin: left center;
+    animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  100% {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+}
+@keyframes curtain-letter {
+  0% {
+    transform: translateY(110%);
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  41.7% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  100% {
+    transform: translateY(-110%);
+  }
+}
+@keyframes curtain-tagline {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  50%,
+  75% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+/* Arriving from a language switch (full page load): the stripes are already
+   closed at the first paint and open the way a page transition does. */
+html[data-intro="open"] .curtain-intro {
+  animation: curtain-fade 0.01s linear 0.85s both;
+}
+html[data-intro="open"] .curtain-intro [data-backdrop],
+html[data-intro="open"] .curtain-intro [data-letter],
+html[data-intro="open"] .curtain-intro [data-tagline] {
+  animation: none;
+  opacity: 0;
+}
+html[data-intro="open"] .curtain-intro [data-stripe] {
+  animation: curtain-open-a 0.6s cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+html[data-intro="open"] .curtain-intro [data-stripe="b"] {
+  animation-name: curtain-open-b;
+}
+@keyframes curtain-open-a {
+  from {
+    transform: scaleX(1);
+    transform-origin: right center;
+  }
+  to {
+    transform: scaleX(0);
+    transform-origin: right center;
+  }
+}
+@keyframes curtain-open-b {
+  from {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+  to {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+}
+
+/* Intro already seen this session (set by the inline <head> script). */
+html[data-intro="done"] .curtain {
+  opacity: 0;
+}
+html[data-intro="done"] .curtain-intro,
+html[data-intro="done"] .curtain-intro * {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .curtain {
+    display: none;
+  }
 }

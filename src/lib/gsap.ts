@@ -9,13 +9,13 @@
  */
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
 import { CustomEase } from "gsap/CustomEase";
 import { useGSAP } from "@gsap/react";
 
 // Registration is idempotent; running it at module load (client-only, since
 // every consumer is a 'use client' component) guarantees a single setup.
-gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, CustomEase);
+// (Only the plugins the site uses — each one ships in every page's bundle.)
+gsap.registerPlugin(useGSAP, ScrollTrigger, CustomEase);
 
 // cubic-bezier(0.16, 1, 0.3, 1) === --ease-premium, expressed as an SVG path.
 CustomEase.create("premium", "M0,0 C0.16,1 0.3,1 1,1");
@@ -32,4 +32,4 @@ export const DURATION = {
   slow: 1.2,
 } as const;
 
-export { gsap, ScrollTrigger, SplitText, CustomEase, useGSAP };
+export { gsap, ScrollTrigger, CustomEase, useGSAP };

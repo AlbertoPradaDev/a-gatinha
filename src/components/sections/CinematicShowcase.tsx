@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { showcase } from "@/lib/data/showcase";
+import type { ShowcaseContent } from "@/types/content";
 
 /**
  * Cinematic scroll reveal. A pinned (sticky) viewport holds an image that opens
@@ -14,7 +14,7 @@ import { showcase } from "@/lib/data/showcase";
  *
  * Reduced motion: the image is shown full-bleed, statically (no scrub).
  */
-export function CinematicShowcase() {
+export function CinematicShowcase({ showcase }: { showcase: ShowcaseContent }) {
   const scope = useRef<HTMLDivElement>(null);
   const frame = useRef<HTMLDivElement>(null);
   const inner = useRef<HTMLDivElement>(null);
