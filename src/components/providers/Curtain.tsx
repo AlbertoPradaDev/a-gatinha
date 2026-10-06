@@ -69,7 +69,7 @@ export function Curtain({ tagline }: { tagline: string }) {
           },
         })
         .set(stripes, { transformOrigin: (i: number) => exitOrigin(i) })
-        .to(stripes, { scaleX: 0, duration: 0.6, stagger: 0.07, ease: "power4.inOut" });
+        .to(stripes, { scaleX: 0, duration: 0.5, stagger: 0.05, ease: "power4.inOut" });
     }
 
     function cover(href: string, fullLoad: boolean) {
@@ -101,9 +101,9 @@ export function Curtain({ tagline }: { tagline: string }) {
       gsap
         .timeline({ onComplete: go })
         .set(stripes, { scaleX: 0, transformOrigin: (i: number) => enterOrigin(i) })
-        .to(stripes, { scaleX: 1, duration: 0.38, stagger: 0.05, ease: "power4.inOut" });
+        .to(stripes, { scaleX: 1, duration: 0.3, stagger: 0.04, ease: "power4.inOut" });
       // Navigate even if animation frames are throttled (background tab).
-      state.timer = window.setTimeout(go, 650);
+      state.timer = window.setTimeout(go, 500);
     }
 
     // ── Intro (CSS) ──────────────────────────────────────────────────────

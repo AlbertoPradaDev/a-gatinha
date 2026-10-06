@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { toneBg, type Tone } from "@/lib/tone";
 import { Button } from "@/components/ui/button";
 import { SmartLink } from "@/components/ui/SmartLink";
-import { gsap, useGSAP, EASE, DURATION } from "@/lib/gsap";
+import { gsap, useGSAP, EASE } from "@/lib/gsap";
 import { isRevealed, onReveal } from "@/lib/curtain";
 import type { PageHeroContent } from "@/types/content";
 
@@ -34,8 +34,8 @@ export function PageHero({ hero, tone }: { hero: PageHeroContent; tone?: Tone })
         gsap.set(lines, { yPercent: 115 });
         gsap.set(rises, { opacity: 0, y: 28 });
         const tl = gsap.timeline({ paused: true, defaults: { ease: EASE.premium } });
-        tl.to(lines, { yPercent: 0, duration: DURATION.slow * 0.8, stagger: 0.12 }, 0.1)
-          .to(rises, { opacity: 1, y: 0, duration: DURATION.medium, stagger: 0.08 }, 0.4);
+        tl.to(lines, { yPercent: 0, duration: 0.75, stagger: 0.08 }, 0)
+          .to(rises, { opacity: 1, y: 0, duration: 0.5, stagger: 0.06 }, 0.2);
         // Start as the page curtain opens (intro / page transition).
         return onReveal(() => tl.play());
       });
