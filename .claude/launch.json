@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "venus",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "C:/Users/alber/Documents/venus", "run", "dashboard"],
+      "port": 5050
+    }
+  ]
+}
